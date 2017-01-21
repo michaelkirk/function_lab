@@ -1,0 +1,197 @@
+<html>
+  <head>
+     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+      <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+<style>
+#map {
+  height: 100%;
+
+}
+</style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+
+    <script type="text/javascript">
+
+      // Generic Map Setup, ignore this...
+      var map = L.map('map').setView([34.06, -118.24], 13);
+      L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+          attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+          maxZoom: 18,
+          id: 'michaelkirk.icc5c5d0',
+          accessToken: 'pk.eyJ1IjoibWljaGFlbGtpcmsiLCJhIjoiYzUwNmQ1ZTQ5ODQ0MDIxYzAwYTg1ZmRhNGU0ZWQwZGEifQ.xe808GYJ4yz27N4EDjvnZg'
+          }).addTo(map);
+
+
+
+      // FUNCTION LAB.
+      // Why you might want to use a function...
+
+      // Say we got this restaurant data from Yelp.
+      // The format is [lat, lon, rating]
+      var restaurants = [
+        [34.07, -118.22, 3.4],
+        [34.03, -118.20, 1.2],
+        [34.06, -118.27, 4.2],
+      ];
+
+      // We want to draw a marker for every restaurant. Additionally, we'll find which restaurant has the highest
+      // rating and draw a "double" circle around that marker so people know that's the best one.
+
+      // We don't know the high score yet, so we'll start at 0, and update as we find higher ratings
+      var highestScore = 0
+
+      // Later we'll use this variable to keep track of *which* restaurant had the highest score.
+      var indexOfHighestScore;
+
+      // Go through all the restaurants an do some stuff.
+      for (var i = 0; i < restaurants.length; i++) {
+        var restaurant = restaurants[i];
+
+        // Add a regular marker for each restaurant
+        L.circleMarker(restaurant, {radius: 10, color: "blue"}).addTo(map);
+
+        // See if this restaurant had a higher score than we've seen so far
+        var thisRestaurantScore = restaurant[2];
+
+        if (thisRestaurantScore > highestScore) {
+          // Found a new contender for best restaurant!
+          highestScore = thisRestaurantScore;
+
+          // Keep track of which restaurant it was
+          indexOfHighestScore = i;
+        }
+      }
+
+      // At this point we've gone through all the restaurants.
+      // We know which has the highest score of them all
+      var bestRestaurant = restaurants[indexOfHighestScore];
+
+      // Draw a bigger marker around the best one so it stands out
+      L.circleMarker(bestRestaurant, {radius: 20, color: "blue"}).addTo(map);
+
+
+      // OK. Done with restaurants.
+      // Let's do the same thing for coffee shops and for books stores. You can just skim the following code.
+      // as it's intended to be functionally the same as what we did for restaurants, with ONE little distinction,
+      // we use "black" color for coffee shop markers and "tomato" color for book store markers.
+      var coffeeShops = [
+        [34.08, -118.20, 4.1],
+        [34.10, -118.22, 3.2],
+        [34.09, -118.19, 4.9],
+        [34.04, -118.22, 2.3],
+        [34.03, -118.26, 1.0],
+      ];
+
+      // We want to draw a marker for every coffee shop. Additionally, we'll find which coffee shop has the highest
+      // rating and draw a "double" circle around that marker.
+
+      // Initially highest known score is 0, we'll update this as we find higher ratings
+      var highestScore = 0
+
+      // Currently there is no value for "indexOfHighestScore" but you'll see
+      // later where we use this.
+      var indexOfHighestScore;
+
+      for (var i = 0; i < coffeeShops.length; i++) {
+        var coffeeShop = coffeeShops[i];
+
+        var thisCoffeeShopsScore = coffeeShop[2];
+
+        if (thisCoffeeShopsScore > highestScore) {
+          // Found a new contender for best coffee shop!
+          highestScore = thisCoffeeShopsScore;
+
+          // Keep track of which coffee shop it was
+          indexOfHighestScore = i;
+        }
+
+        // Add a regular marker for each coffee shop
+        L.circleMarker(coffeeShop, {radius: 10, color: "black"}).addTo(map);
+      }
+
+      // At this point we've gone through all the coffee shops.
+      // And we know which has the highest score of them all
+      var bestCoffeeShop = coffeeShops[indexOfHighestScore];
+      L.circleMarker(bestCoffeeShop, {radius: 20, color: "black"}).addTo(map);
+
+
+      // OK. Done with Coffee shops
+      // Let's do the same thing for books stores
+      var bookStores = [
+        [34.02, -118.23, 2.0],
+        [34.04, -118.21, 3.3],
+        [34.03, -118.24, 4.4],
+      ];
+
+      // We want to draw a marker for every book store. Additionally, we'll
+      // find which book store has the highest // rating and draw a "double" circle
+      // around that marker.
+
+      // Initially highest known score is 0, we'll update this as we find higher ratings
+      var highestScore = 0
+
+      // Currently there is no value for "indexOfHighestScore" but you'll see
+      // later where we use this.
+      var indexOfHighestScore;
+
+      for (var i = 0; i < bookStores.length; i++) {
+        var bookStore = bookStores[i];
+
+        var thisBookStoresScore = bookStore[2];
+
+        if (thisBookStoresScore > highestScore) {
+          // Found a new contender for best book store!
+          highestScore = thisBookStoresScore;
+
+          // Keep track of which book store it was
+          indexOfHighestScore = i;
+        }
+
+        // Add a regular marker for each book store
+        L.circleMarker(bookStore, {radius: 10, color: "tomato"}).addTo(map);
+      }
+
+      // At this point we've gone through all the book stores.
+      // And we know which has the highest score of them all
+      var bestBookStore = bookStores[indexOfHighestScore];
+      L.circleMarker(bestBookStore, {radius: 20, color: "tomato"}).addTo(map);
+
+
+      function foo() {
+        console.log("asdsad");
+      }
+      // NOW. The point of the lab. Let's say you wanted to add a pop-up that dispayed the individual score for each marker.
+      // You would have to add it in three different places (once for restaurants, coffeeshops, and book stores).
+      // And then lets say you wanted the markers to be just a *little* bit smaller. You'd also have to make that change in 
+      // three different places.
+      //
+      // Instead, what if instead of having this code mostly-duplicated in three different places, you could define a procedure
+      // (In some languages functions are called procedures - same thing.)
+      // and reuse this procedure for restaurants, coffeeshops, and book stores. Then when you wanted to make future changes,
+      // you could just change that one centraly defined procedure, rather than having to make the same edit to the code that 
+      // handles restaurants, again for coffee shops, and again for book stores.
+      //
+      // SO.
+      // Step 1 - Identity the chunk of logic (code) that seems identical between the three category arrays (restaurants, coffeeShops, bookstores)
+      // put that logic into a function that takes an array as an argument.
+      //
+      // Step 2 - replace all the duplicated code with the function. (so you'll use the function three times. Once for restaurants, once for 
+      // coffee shops, and once for books stores
+      //
+      // Step 3 - Did you get color working? Or are they all the same color? Since the color should be different for each array,
+      // we should add a "color" parameter to the function, and pass that in with the array.
+      //
+      // Once this is done, we should be functionally equivalent with the original code, but we're much better positioned to make changes
+      // that affect our map without having to duplicate those changes everywher.
+      //
+      // Step 4 - Add a pop-up with the locations rating to each marker by modifying the shared procedure
+      //
+      // Step 5 - Tweak the radius of the "high score" radius to be a little smaller. Like maybe 14?
+
+    </script>
+
+  </body>
+</html>
